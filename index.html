@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jat Maomo Calculator (age calculator)</title>
+		<p style="color"> Age calculator</p>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result-container {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        #next-birthday-container {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h2>Jat Maomo Calculator</h2>
+        <label for="birthYear">Enter your birth year:</label>
+        <input type="number" id="birthYear" placeholder="YYYY" min="1900" max="2099" required>
+        <label for="birthMonth">Enter your birth month:</label>
+        <input type="number" id="birthMonth" placeholder="MM" min="1" max="12" required>
+        <label for="birthDay">Enter your birth day:</label>
+        <input type="number" id="birthDay" placeholder="DD" min="1" max="31" required>
+        <button onclick="calculateAge()">Calculate Age</button>
+        <div id="result-container"></div>
+        <div id="next-birthday-container"></div>
+    </div>
+
+    <script>
+        function calculateAge() {
+            const birthYearInput = document.getElementById('birthYear');
+            const birthMonthInput = document.getElementById('birthMonth');
+            const birthDayInput = document.getElementById('birthDay');
+
+            const birthYear = parseInt(birthYearInput.value);
+            const birthMonth = parseInt(birthMonthInput.value) - 1; // Month is 0-based in JavaScript
+            const birthDay = parseInt(birthDayInput.value);
+
+            if (!birthYear || !birthMonthInput || !birthDay || birthYear < 1900 || birthYear > new Date().getFullYear() || birthMonth < 0 || birthMonth > 11 || birthDay < 1 || birthDay > 31) {
+                alert('Please enter a valid birth date.');
+                return;
+            }
+
+            const birthDate = new Date(birthYear, birthMonth, birthDay);
+            const currentDate = new Date();
+
+            const ageInMilliseconds = currentDate - birthDate;
+
+            const ageInSeconds = ageInMilliseconds / 1000;
+            const ageInMinutes = ageInSeconds / 60;
+            const ageInHours = ageInMinutes / 60;
+            const ageInDays = ageInHours / 24;
+            const ageInMonths = ageInDays / 30; // Approximate months
+            const ageInYears = currentDate.getFullYear() - birthDate.getFullYear();
+
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.innerHTML = `
+                <strong>Total Age:</strong><br>
+                Years: ${ageInYears}<br>
+                Months: ${Math.floor(ageInMonths)}<br>
+                Days: ${Math.floor(ageInDays)}<br>
+                Hours: ${Math.floor(ageInHours)}<br>
+                Minutes: ${Math.floor(ageInMinutes)}<br>
+                Seconds: ${Math.floor(ageInSeconds)}
+            `;
+
+            // Calculate next birthday
+            const nextBirthday = new Date(currentDate.getFullYear() + 1, birthMonth, birthDay);
+            const timeUntilNextBirthday = nextBirthday - currentDate;
+            const daysUntilNextBirthday = timeUntilNextBirthday / (1000 * 60 * 60 * 24);
+
+            const nextBirthdayContainer = document.getElementById('next-birthday-container');
+            nextBirthdayContainer.innerHTML = `Days until next birthday: ${Math.floor(daysUntilNextBirthday)}`;
+        }
+    </script>
+</body>
+</html>
